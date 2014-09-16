@@ -2,5 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/packages/WPFToolkit.3.5.50211.1
+/bin/Debug
+/obj/Debug
+/packages
+*.user
 *.suo

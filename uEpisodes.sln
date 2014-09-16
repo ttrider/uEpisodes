@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uEpisodes", "uEpisodes.csproj", "{54B519B3-51CE-4535-9528-6E110C3CCBBC}"
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uEpisodes", "uEpisodes\uEpisodes.csproj", "{54B519B3-51CE-4535-9528-6E110C3CCBBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleverscape.UTorrentClient.WebClient", "..\uTorrentClient\Cleverscape.UTorrentClient.WebClient.csproj", "{208452E4-97DD-4FA0-A071-18B3219B4EDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleverscape.UTorrentClient.WebClient", "uTorrentClient\Cleverscape.UTorrentClient.WebClient.csproj", "{208452E4-97DD-4FA0-A071-18B3219B4EDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
