@@ -1,0 +1,260 @@
+﻿<Application x:Class="TTRider.uEpisodes.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:appdata="clr-namespace:TTRider.uEpisodes.Data"
+             xmlns:app="clr-namespace:TTRider.uEpisodes" xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:commands="clr-namespace:TTRider.uEpisodes.Data.Commands"
+             StartupUri="MainWindow.xaml" ShutdownMode="OnLastWindowClose">
+    <Application.Resources>
+        <appdata:AppModel x:Key="appData"/>
+
+        <commands:PendingCopyAllCommand     x:Key="PendingCopyAll"/>
+        <commands:PendingMoveAllCommand     x:Key="PendingMoveAll"/>
+        <commands:PendingClearAllCommand    x:Key="PendingClearAll"/>
+
+        <commands:PendingPerformAllCommand  x:Key="PendingPerformAll"/>
+        <commands:PendingRetryAllCommand  x:Key="PendingRetryAll"/>
+
+        <commands:PendingPerformCommand     x:Key="PendingPerform"/>
+        <commands:PendingCancelCommand      x:Key="PendingCancel"/>
+        <commands:PendingRetryCommand      x:Key="PendingRetry"/>
+
+        <commands:MainOpenFileCommand       x:Key="MainOpenFile"/>
+        <commands:MainOpenFolderCommand     x:Key="MainOpenFolder"/>
+        <commands:MainSettingsCommand       x:Key="MainSettings"/>
+
+        <commands:RunningRetryCommand      x:Key="RunningRetry"/>
+        <commands:RunningCancelCommand      x:Key="RunningCancel"/>
+
+
+        <app:CollectionToVisibilityConverter x:Key="CollectionConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <app:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <app:InvertBoolConverter x:Key="InvertBoolConverter"/>
+
+
+
+        <Style TargetType="{x:Type Window}" x:Key="WindowStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+
+        <Style TargetType="TextBlock" x:Key="HeaderItem">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="TextItem">
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="RightTextItem" >
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+
+
+
+        <Style TargetType="TextBlock" x:Key="CommandItem" >
+            <Setter Property="Margin" Value="5,10,15,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush x:Name="MyAnimatedBrush" Color="Orange" />
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation To="16" Duration="0:0:1.5" 
+                AccelerationRatio="0.10" DecelerationRatio="0.25" 
+                Storyboard.TargetProperty="(FontSize)" />
+                            <!--<ColorAnimation 
+                Storyboard.TargetName="MyAnimatedBrush"
+                Storyboard.TargetProperty="Color"
+                To="Gray" Duration="0:0:1" />-->
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:1.5" 
+                AccelerationRatio="0.10" DecelerationRatio="0.25" 
+                Storyboard.TargetProperty="(FontSize)" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Command" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+        </Style>
+
+
+
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10,0,5,0"/>
+            <Setter Property="TextAlignment" Value="Right" />
+        </Style>
+
+        <Style x:Key="FormValue" TargetType="FrameworkElement">
+            <Setter Property="Margin" Value="5,0,15,0"/>
+
+        </Style>
+
+        <Style x:Key="FormGroup" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5,10,5,5"/>
+            <Setter Property="FontSize" Value="14"></Setter>
+
+        </Style>
+
+        <Style x:Key="DialogButton" TargetType="Button">
+            <Setter Property="Margin" Value="10,10,0,0"/>
+            <Setter Property="MinWidth" Value="75"/>
+        </Style>
+        <Style x:Key="HeaderBorder" TargetType="{x:Type Border}">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background">
+                <Setter.Value>
+
+                    <LinearGradientBrush EndPoint="1, 0.5" StartPoint="0, 0.5">
+                        <GradientStop Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}" Offset="0"/>
+
+                        <GradientStop Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}" Offset="1"/>
+                    </LinearGradientBrush>
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="HeaderText" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+
+
+        <DataTemplate x:Key="LogDataTemplate" DataType="appdata:AppModelTraceItem">
+            <Grid ToolTip="{Binding Details}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="LogTime"/>
+                    <ColumnDefinition SharedSizeGroup="LogType"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="{Binding Timestamp}" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Type}" Grid.Column="1" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Message}" Grid.Column="2" TextWrapping="Wrap"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RunningFileDataTemplate" DataType="appdata:EpisodeFile">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock >
+        			<Run Text="{Binding Show, Mode=OneWay}"/>
+					<Run> - </Run>
+					S<Run Text="{Binding Season, Mode=OneWay}"/>
+					E<Run Text="{Binding Episode, Mode=OneWay}"/>
+					<Run> - </Run>
+					<Run Text="{Binding Title, Mode=OneWay}"/>
+                </TextBlock>
+                <TextBlock Grid.Column="1" Text="{Binding Status, Mode=OneWay}" TextAlignment="Right"/>
+                <TextBlock Grid.Column="2"><!--<Hyperlink>Cancel</Hyperlink>--></TextBlock>
+                <TextBlock Grid.Column="3"><!--<Hyperlink>Retry</Hyperlink>--></TextBlock>
+
+                <ItemsControl ItemsSource="{Binding Errors, Mode=OneWay}" Grid.Row="1" Grid.ColumnSpan="4">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="system:String">
+                            <TextBlock FontSize="10" Foreground="DarkRed">ERROR: <Run Text="{Binding Mode=OneWay}"/></TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PendingFileDataTemplete" DataType="appdata:EpisodeFile">
+            <Border Margin="0,2,0,10" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" BorderThickness="1,1,1,1" Padding="2,2,2,2"  >
+                <Border.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger   Binding="{Binding IsReady}" Value="False" >
+                                <Setter Property="Border.Background" Value="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}"></Setter>
+                            </DataTrigger>
+                            <DataTrigger   Binding="{Binding IsReady}" Value="True" >
+                                <Setter Property="Border.Background" Value="Transparent"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="Title"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="Season"/>
+                        <ColumnDefinition SharedSizeGroup="Episode"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Style="{DynamicResource RightTextItem}" Grid.Column="0" FontSize="16"><Run Text="File:"/></TextBlock>
+                    <TextBlock Style="{DynamicResource TextItem}" Grid.Column="1" Grid.ColumnSpan = "3" FontSize="16"  Text="{Binding FilePath}" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" TextAlignment="Right">
+                            <Hyperlink  CommandParameter="{Binding}" Command="{DynamicResource PendingRetry}"><Run Text="RETRY"/></Hyperlink>
+                    </TextBlock>
+
+                    <TextBlock Style="{DynamicResource RightTextItem}" Grid.Column="0" Grid.Row="1" ><Run Text="Show:"/></TextBlock>
+                    <TextBlock Style="{DynamicResource TextItem}" Grid.Column="1" Grid.Row="1"  Text="{Binding Show, Mode=OneWay}"/>
+                    <TextBlock Style="{DynamicResource TextItem}" Grid.Column="2" Grid.Row="1" Text="Season: "/><TextBox Grid.Column="3" Grid.Row="1" Text="{Binding Season, Mode=TwoWay}"/>
+                    <TextBlock Style="{DynamicResource TextItem}" Grid.Column="2" Grid.Row="2" Text="Episode: "/><TextBox Grid.Column="3" Grid.Row="2" Text="{Binding Episode, Mode=TwoWay}" />
+                    <TextBlock Style="{DynamicResource RightTextItem}" Grid.Column="0" Grid.Row="2" ><Run Text="Title:"/></TextBlock>
+                    <TextBlock Style="{DynamicResource TextItem}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan = "3"  Text="{Binding Title, Mode=OneWay}"/>
+                    <TextBlock Style="{DynamicResource RightTextItem}" Grid.Column="0" Grid.Row="3" ><Run Text="Status:"/></TextBlock>
+                    <TextBlock Style="{DynamicResource TextItem}" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan = "2"  Text="{Binding Status, Mode=OneWay}"/>
+                    <app:ShowSelectorControl Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Margin="5" DataContext="{Binding ShowSelector}"/>
+
+
+                    <TextBlock Grid.Column="0" Grid.Row="5" Style="{DynamicResource RightTextItem}" Text="Actions:" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <ItemsControl Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding Actions}" Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="appdata:EpisodeFileAction">
+                                <CheckBox Margin="5" IsChecked="{Binding IsEnabled}" >
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding TargetCommand}" />
+                                </CheckBox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Grid.Row="6" Grid.Column="2" TextAlignment="Right"  Visibility="{Binding IsReady, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Hyperlink  CommandParameter="{Binding}" Command="{DynamicResource PendingPerform}" ><Run Text="PERFORM"/></Hyperlink></TextBlock>
+                    <TextBlock Grid.Row="6" Grid.Column="3" TextAlignment="Right"  ><Hyperlink Command="{DynamicResource PendingCancel}" CommandParameter="{Binding}"  ><Run Text="CANCEL"/></Hyperlink></TextBlock>
+
+
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+    </Application.Resources>
+</Application>

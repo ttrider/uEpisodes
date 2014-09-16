@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="TTRider.uEpisodes.ShowSelectorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+             xmlns:tvDatabase="clr-namespace:TTRider.uEpisodes.TVDatabase"
+             xmlns:appdata="clr-namespace:TTRider.uEpisodes.Data"
+             xmlns:showSelector="clr-namespace:TTRider.uEpisodes.Data.Commands.ShowSelector"
+             mc:Ignorable="d" 
+             d:DesignWidth="300" d:DataContext="{d:DesignInstance appdata:ShowSelector}"
+             Visibility="{Binding IsReady, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='reverse'}">
+    <UserControl.Resources>
+        <showSelector:ShowSelectorCommand  Mode="Search"  x:Key="SearchShow" />
+        <showSelector:ShowSelectorCommand  Mode="Stop"  x:Key="StopSearch" />
+        <showSelector:ShowSelectorCommand  Mode="UseSelected"  x:Key="UseSelected" />
+        <showSelector:ShowSelectorCommand  Mode="AlwaysUseSelected"  x:Key="AlwaysUseSelected" />
+        <showSelector:ShowSelectorCommand  Mode="UseAsIs"  x:Key="UseAsIs" />
+    </UserControl.Resources>
+    <Border BorderBrush="#FF510000" BorderThickness="1,1,3,3" CornerRadius="1" Padding="10" x:Name="Root">
+        <Border.Style>
+            <Style>
+
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding InAutomaticMode}" Value="false">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard Duration="0:0:0.1">
+                                    <ThicknessAnimation Storyboard.TargetProperty="BorderThickness" To="1,1,3,3" From="0,0,0,0"/>
+                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" From="1,1,3,3" To="0,0,0,0"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard Duration="0:0:0.1">
+                                    <ThicknessAnimation Storyboard.TargetProperty="BorderThickness" From="1,1,3,3" To="0,0,0,0"/>
+                                    <ThicknessAnimation Storyboard.TargetProperty="Margin" To="1,1,3,3" From="0,0,0,0"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="3">Please select a show:</TextBlock>
+
+            <ItemsControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding EpisodeSelection}" IsEnabled="{Binding InSearchingMode,Converter={StaticResource InvertBoolConverter}}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="appdata:ShowEpisodeItem">
+                        <RadioButton Margin="5" GroupName="{Binding File, Mode=OneWay}" Content="{Binding ShowTitle}" IsEnabled="{Binding IsValid}" IsChecked="{Binding IsSelected}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Grid.Row="2">Search for a show:</TextBlock>
+
+            <controls:AutoCompleteBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source={x:Static tvDatabase:Shows.Current}, Path=ShowList}" IsTextCompletionEnabled="True" KeyUp="OnKeyUp" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding InSearchingMode,Converter={StaticResource InvertBoolConverter}}"></controls:AutoCompleteBox>
+            <TextBlock Grid.Row="3" Grid.Column="2" Margin="3,4,0,0"><Hyperlink x:Name="SearchButton" Command="{DynamicResource SearchShow}" CommandParameter="{Binding}" IsEnabled="{Binding InSearchingMode,Converter={StaticResource InvertBoolConverter}}">SEARCH</Hyperlink></TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="2" Margin="3,4,0,0"><Hyperlink x:Name="AsIsButton" Command="{DynamicResource UseAsIs}" CommandParameter="{Binding}" IsEnabled="{Binding InSearchingMode,Converter={StaticResource InvertBoolConverter}}">USE AS IS</Hyperlink></TextBlock>
+
+            <ProgressBar Grid.Row="4" Grid.ColumnSpan="2" IsIndeterminate="True" Height="8" Margin="0,5,0,5" Visibility="{Binding InSearchingMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Grid.Row="5" Grid.Column="2" Margin="3,4,0,0" Visibility="{Binding InSearchingMode, Converter={StaticResource BoolToVisibilityConverter}}" ><Hyperlink IsEnabled="{Binding IsCancelling, Converter={StaticResource InvertBoolConverter}}" Command="{DynamicResource StopSearch}" CommandParameter="{Binding}" >STOP</Hyperlink></TextBlock>
+            <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Text="{Binding Status}"/>
+            <TextBlock Grid.Column="0" Grid.Row="7" Margin="0,5,0,0" Grid.ColumnSpan="3" TextAlignment="Right" VerticalAlignment="Center"  Visibility="{Binding EpisodeSelection, Converter={StaticResource CollectionConverter}}" IsEnabled="{Binding InSearchingMode,Converter={StaticResource InvertBoolConverter}}" >
+                            <Hyperlink Command="{DynamicResource UseSelected}" CommandParameter="{Binding}" >
+                                <Run Text="USE SELECTED"/>
+                            </Hyperlink>
+                            <LineBreak/>
+                            <Hyperlink Command="{DynamicResource AlwaysUseSelected}"  CommandParameter="{Binding}" >
+                                <Run Text="ALWAYS USE SELECTED"/>
+                            </Hyperlink>
+            </TextBlock>
+
+        </Grid>
+    </Border>
+</UserControl>

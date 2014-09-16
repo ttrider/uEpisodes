@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uEpisodes", "uEpisodes.csproj", "{54B519B3-51CE-4535-9528-6E110C3CCBBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleverscape.UTorrentClient.WebClient", "..\uTorrentClient\Cleverscape.UTorrentClient.WebClient.csproj", "{208452E4-97DD-4FA0-A071-18B3219B4EDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54B519B3-51CE-4535-9528-6E110C3CCBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54B519B3-51CE-4535-9528-6E110C3CCBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54B519B3-51CE-4535-9528-6E110C3CCBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54B519B3-51CE-4535-9528-6E110C3CCBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208452E4-97DD-4FA0-A071-18B3219B4EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208452E4-97DD-4FA0-A071-18B3219B4EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208452E4-97DD-4FA0-A071-18B3219B4EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208452E4-97DD-4FA0-A071-18B3219B4EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
