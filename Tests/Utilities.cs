@@ -10,7 +10,7 @@ namespace Tests
 {
     class Utilities
     {
-        static Stream GetDataStream(string name)
+        public static Stream GetDataStream(string name)
         {
             return Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof (Utilities), name);
         }

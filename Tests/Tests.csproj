@@ -65,6 +65,9 @@
   <ItemGroup>
     <EmbeddedResource Include="episodes.html" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="files.txt" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

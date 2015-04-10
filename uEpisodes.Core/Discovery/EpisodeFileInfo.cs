@@ -8,5 +8,10 @@ namespace TTRider.uEpisodes.Core.Discovery
 {
     public class EpisodeFileInfo
     {
+        public EpisodeFileInfo()
+        {
+        }
+
+        public VideoFileInfo    VideoFile { get; set; }
     }
 }

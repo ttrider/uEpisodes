@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TTRider.uEpisodes.Core.Discovery;
+using TTRider.uEpisodes.Core.Properties;
 
 namespace Tests
 {
@@ -53,5 +57,26 @@ namespace Tests
 
         }
 
+
+        [TestMethod]
+        public async Task FullRun()
+        {
+            var settings = Settings.Default;
+
+            var processor = new EpisodeDiscoveryProcessor();
+            processor.Initialize(settings);
+
+            var files = new StreamReader(Utilities.GetDataStream("files.txt")).ReadToEnd()
+                .Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var path in files)
+            {
+                Console.WriteLine("===============================================");
+
+                var info = await processor.ProcessFile(path);
+
+                Console.WriteLine(info.VideoFile.Path);
+            }
+        }
     }
 }
