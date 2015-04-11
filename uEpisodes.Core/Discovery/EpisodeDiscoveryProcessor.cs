@@ -21,24 +21,52 @@ namespace TTRider.uEpisodes.Core.Discovery
         }
 
 
-        public async Task<EpisodeFileInfo> ProcessFile(string path)
+        public async Task<EpisodeFileInfo> ProcessFile(string path, CancellationToken cancellationToken)
         {
-            var info =  new EpisodeFileInfo
+            var info = new EpisodeFileInfo
             {
                 VideoFile = fileProcessor.ProcessFile(path)
             };
 
-            if (info.VideoFile.VideoIdSet.Any())
-            {
-                foreach (var videoId in info.VideoFile.VideoIdSet)
-                {
 
-                    
+            var showSet = await dataProvider.GetShowListAsync(cancellationToken);
+
+
+            foreach (var videoId in info.GetVideoIdCandidates())
+            {
+                var wordset = DataClient.GetWordset(videoId.Show).ToList();
+
+                if (wordset.Count > 0 && videoId.Season.HasValue && videoId.Episode.HasValue)
+                {
+                    var season = videoId.Season.Value;
+                    var episode = videoId.Episode.Value;
+                    Console.WriteLine("{0}-{1}-{2}", season, episode, videoId.Show);
+
+                    foreach (var showRank in
+                        showSet
+                            .Select(ss => new { ShowInfo = ss, Match = ss.Match(wordset) })
+                            .OrderByDescending(ss => ss.Match)
+                            .Where(ss => ss.Match > 0)
+                        )
+                    {
+
+                        Console.WriteLine("-- {0},{1}",showRank.ShowInfo.Title, showRank.Match);
+
+                        // var episodes = await dataProvider.GetEpisodeListAsync(showRank.ShowInfo, cancellationToken);
+                        //var episodeInfo = episodes.FirstOrDefault(ep => ep.Season == season && ep.Episode == episode);
+
+
+                    }
                 }
             }
 
             return info;
         }
+
+
+
+
+
 
         public EpisodeFileInfo Refine(EpisodeFileInfo info)
         {
@@ -58,14 +86,14 @@ namespace TTRider.uEpisodes.Core.Discovery
         //        shows.Add(showInfo);
 
         //    }, CancellationToken.None).Wait();
-            
+
         //    return shows;
 
         //}
-    
-    
-    
-    
-    
+
+
+
+
+
     }
 }

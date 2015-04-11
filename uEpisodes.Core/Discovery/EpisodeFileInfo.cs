@@ -13,5 +13,20 @@ namespace TTRider.uEpisodes.Core.Discovery
         }
 
         public VideoFileInfo    VideoFile { get; set; }
+
+        public string ShowName { get; set; }
+
+
+        public IEnumerable<VideoId> GetVideoIdCandidates()
+        {
+            foreach (var videoId in this.VideoFile.GetVideoIdCandidates())
+            {
+
+
+
+                yield return videoId;
+            }
+            
+        }
     }
 }

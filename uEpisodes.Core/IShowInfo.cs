@@ -9,5 +9,7 @@ namespace TTRider.uEpisodes.Core
     public interface IShowInfo
     {
         string Title { get; set; }
+
+        double Match(IEnumerable<string> words);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Configuration;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -128,7 +129,7 @@ namespace TTRider.uEpisodes.Core
         }
 
 
-        public static async Task ProcessRecordsAsync(TextReader reader, Action<string[]> factory, params string[] fieldNames)
+        public static async Task ProcessRecordsAsync(TextReader reader, string terminator, Action<string[]> factory, params string[] fieldNames)
         {
             if (reader == null) throw new ArgumentNullException("reader");
             if (factory == null) throw new ArgumentNullException("factory");
@@ -143,7 +144,7 @@ namespace TTRider.uEpisodes.Core
                     header = await reader.ReadLineAsync();
                 }
                 header = header.ToLower();
-                var fields = new List<string>(header.Split(','));
+                var fields = new List<string>(header.Split(',').Select(h => h.Trim()));
 
                 var relevantFields = fieldNames.Select(name => fields.IndexOf(name.ToLower())).ToList();
 
@@ -152,6 +153,11 @@ namespace TTRider.uEpisodes.Core
                 {
                     if (!string.IsNullOrWhiteSpace(line))
                     {
+                        if (terminator != null && line.Contains(terminator))
+                        {
+                            break;
+                        }
+
                         var row = ParseRow(line).ToList();
 
                         if (row.Count == fields.Count)
@@ -168,7 +174,14 @@ namespace TTRider.uEpisodes.Core
         {
             if (name == null) name = "";
             return name.Split(new[] { ' ', '\t', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '`', '~', '\'', '|', '\\', '[', '{', '}', ']', ',', '.', '<', '>', '/', '?', ';', ':', '"' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(w => w.ToLower());
+                .Select(w => w.ToLower())
+                .OrderBy(w => w)
+                .Where(w => w.Length > 1)
+                .Where(w => w != "the")
+                .Where(w => w != "of")
+                .Where(w => w != "in")
+                .Where(w => w != "at")
+                .Distinct();
         }
 
         public static async Task SkipUntilAsync(TextReader reader, string token)

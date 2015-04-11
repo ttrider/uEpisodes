@@ -26,5 +26,26 @@ namespace TTRider.uEpisodes.Core.Discovery
         }
 
         public List<VideoId> VideoIdSet { get; private set; }
+
+
+        public IEnumerable<VideoId> GetVideoIdCandidates()
+        {
+            foreach (var videoId in this.VideoIdSet)
+            {
+                yield return videoId;
+                if (string.IsNullOrWhiteSpace(videoId.Show))
+                {
+                    for (var i = 1; i < FileParts.Count; i++)
+                    {
+                        yield return new VideoId
+                        {
+                            Episode = videoId.Episode,
+                            Season = videoId.Season,
+                            Show = FileParts[i],
+                        };
+                    }
+                }
+            }
+        }
     }
 }
