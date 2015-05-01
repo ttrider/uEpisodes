@@ -1,0 +1,71 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TTRider.uEpisodes.Core.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CopyToPattern" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{Show}\Season {season}\S{season:00}E{episode:00}. {title}</Value>
+    </Setting>
+    <Setting Name="MoveToPattern" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{Show} - S{season:00}E{episode:00}. {title}</Value>
+    </Setting>
+    <Setting Name="ShowSettings" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowLog" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AdditionalExtensions" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ShowMappings" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FileSystemMonitorFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FileSystemAutoCopy" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FileSystemAutoMove" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FileSystemRunMonitor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="uTorrentAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="uTorrentCredentials" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="uTorrentAutoCopy" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="uTorrentAutoMove" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="uTorrentAutoStopSeeding" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="uTorrentRunMonitor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="IgnoreDirectories" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sample
+Extras
+Documentary
+</Value>
+    </Setting>
+    <Setting Name="FileNamePatterns" Type="System.String" Scope="User">
+      <Value Profile="(Default)">^(?'show'.*)Series\s*(?'season'\d+)\s*Episode\s*(?'episode'\d+)
+^(?'show'.*)Season\s*(?'season'\d+)\s*Episode\s*(?'episode'\d+)
+^(?'show'.*)S\s*(?'season'\d+)\s*E\s*(?'episode'\d+)
+^S\s*(?'season'\d+)\s*E\s*(?'episode'\d+)
+^(?'show'.*)(?'season'\d+)x(?'episode'\d+)
+^(?'show'.*)(?'season'\d\d)x(?'episode'\d\d)
+^(?'show'[^\d]*)(?'season'\d)(?'episode'\d+)
+^(?'show'[^\d]*)(?'season'\d\d)(?'episode'\d+)
+^(?'show'.*)(?'season'\d)(?'episode'\d\d)</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

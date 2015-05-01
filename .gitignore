@@ -4,3 +4,11 @@
 
 /packages/WPFToolkit.3.5.50211.1
 *.suo
+/packages
+/Tests/bin/Debug
+/Tests/obj/Debug
+/uEpisodes.Core/bin/Debug
+/uEpisodes.Core/obj/Debug
+*.user
+*.ncrunchproject
+*.ncrunchsolution
