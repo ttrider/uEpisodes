@@ -13,6 +13,7 @@ namespace TTRider.uEpisodes.TVDatabase
         public string Title { get; set; }
 
         public string Directory { get; set; }
+        public string TvMaze { get; set; }
 
         public string TvRage { get; set; }
 
@@ -45,29 +46,54 @@ namespace TTRider.uEpisodes.TVDatabase
             }
         }
 
+
         public IEnumerable<Episode> GetEpisodes(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             lock (this.Sync)
             {
 
-                var sf = FileData.Get(new Uri(@"http://epguides.com/common/exportToCSV.asp?rage=" + this.TvRage),
-                                      this.Directory + ".txt", token);
-                if (sf.FromCache)
+                // if we have TVMaze - use it!
+                if (string.IsNullOrWhiteSpace(this.TvMaze))
                 {
-                    if (this.episodes != null)
+
+                    var sf = FileData.Get(new Uri(@"http://epguides.com/common/exportToCSV.asp?rage=" + this.TvRage),
+                        this.Directory + ".txt", token);
+                    if (sf.FromCache)
                     {
-                        return this.episodes;
+                        if (this.episodes != null)
+                        {
+                            return this.episodes;
+                        }
                     }
+
+                    var data = PreprocessData(sf.Data);
+
+                    this.episodes =
+                        new List<Episode>(
+                            EnumerateRecords(data, "season", "episode", "title")
+                                .Select(item => new Episode(this.Title, item[0], item[1], item[2])));
+                    return this.episodes;
                 }
+                else
+                {
+                    var sf = FileData.Get(new Uri(@"http://epguides.com/common/exportToCSVmaze.asp?maze=" + this.TvMaze), this.Directory + ".Maze.txt", token);
+                    if (sf.FromCache)
+                    {
+                        if (this.episodes != null)
+                        {
+                            return this.episodes;
+                        }
+                    }
 
-                var data = PreprocessData(sf.Data);
+                    var data = PreprocessData(sf.Data);
 
-                this.episodes =
-                    new List<Episode>(
-                        EnumerateRecords(data, "season", "episode", "title")
-                            .Select(item => new Episode(this.Title, item[0], item[1], item[2])));
-                return this.episodes;
+                    this.episodes =
+                        new List<Episode>(
+                            EnumerateRecords(data, "season", "episode", "title")
+                                .Select(item => new Episode(this.Title, item[0], item[1], item[2])));
+                    return this.episodes;
+                }
             }
         }
 

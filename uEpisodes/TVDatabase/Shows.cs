@@ -48,12 +48,13 @@ namespace TTRider.uEpisodes.TVDatabase
 
                 this.shows =
                     new List<Show>(
-                        EnumerateRecords(sf.Data, "title", "directory", "tvrage", "country").Select(item => new Show
+                        EnumerateRecords(sf.Data, "title", "directory", "TVmaze", "tvrage", "country").Select(item => new Show
                             {
                                 Title = item[0],
                                 Directory = item[1],
-                                TvRage = item[2],
-                                Country = item[3]
+                                TvMaze = item[2],
+                                TvRage = item[3],
+                                Country = item[4]
                             }));
                 return this.shows;
             }
