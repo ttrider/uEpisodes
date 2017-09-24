@@ -12,3 +12,11 @@
 *.user
 *.ncrunchproject
 *.ncrunchsolution
+/uEpisodes/obj
+/EpGuideProvider/obj
+/Tests/obj
+/uEpisodes.Core/obj
+/uEpisodes/bin
+/EpGuideProvider/bin
+/Tests/bin
+/uEpisodes.Core/bin

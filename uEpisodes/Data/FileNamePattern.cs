@@ -53,9 +53,12 @@ namespace TTRider.uEpisodes.Data
             {
                 sb.Replace(t, ' ');
             }
-            return sb.ToString();
+            sb.Replace(':', ' ');
+            var parts = sb.ToString()
+                    .Split(new[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            return string.Join(" ", parts);
         }
-        
+
         public static string ApplyFilePattern(string pattern, string filePath, string show, int season, int episode, string title, bool createDirectory = false)
         {
             var fileName = ApplyFilePattern(pattern, show, season, episode, title);
